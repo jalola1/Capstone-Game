@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dqxrxeuofyjci"
+path="res://.godot/imported/power up ends 2-236679.mp3-03efd4fea4537dc85066618d564783bc.mp3str"
+
+[deps]
+
+source_file="res://NEW sfx/sound effects/power up sfx/power up ends 2-236679.mp3"
+dest_files=["res://.godot/imported/power up ends 2-236679.mp3-03efd4fea4537dc85066618d564783bc.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

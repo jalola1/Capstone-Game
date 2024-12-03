@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dpgql6q7wjtkh"
+path="res://.godot/imported/fairy-dust-shimmer-1-175611.mp3-99fafc69e784c6530e8187d57646b239.mp3str"
+
+[deps]
+
+source_file="res://NEW sfx/sound effects/power up sfx/fairy-dust-shimmer-1-175611.mp3"
+dest_files=["res://.godot/imported/fairy-dust-shimmer-1-175611.mp3-99fafc69e784c6530e8187d57646b239.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

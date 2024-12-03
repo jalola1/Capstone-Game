@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://7xkqc5etxfr7"
+path="res://.godot/imported/candy falling down-176648.mp3-12f582e19e15027692c5fda69aac35cc.mp3str"
+
+[deps]
+
+source_file="res://NEW sfx/sound effects/power up sfx/candy falling down-176648.mp3"
+dest_files=["res://.godot/imported/candy falling down-176648.mp3-12f582e19e15027692c5fda69aac35cc.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

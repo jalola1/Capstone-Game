@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://brp6hj7k8skgx"
+path="res://.godot/imported/candy falling (personal fav)-2-175610.mp3-a1866b40f30d541ca3c7217012cb7f46.mp3str"
+
+[deps]
+
+source_file="res://NEW sfx/sound effects/power up sfx/candy falling (personal fav)-2-175610.mp3"
+dest_files=["res://.godot/imported/candy falling (personal fav)-2-175610.mp3-a1866b40f30d541ca3c7217012cb7f46.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

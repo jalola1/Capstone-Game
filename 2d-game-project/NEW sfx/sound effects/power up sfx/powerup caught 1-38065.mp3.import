@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://d2234hbw64615"
+path="res://.godot/imported/powerup caught 1-38065.mp3-128855fa8741ccae3497e7d3acce6d06.mp3str"
+
+[deps]
+
+source_file="res://NEW sfx/sound effects/power up sfx/powerup caught 1-38065.mp3"
+dest_files=["res://.godot/imported/powerup caught 1-38065.mp3-128855fa8741ccae3497e7d3acce6d06.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
