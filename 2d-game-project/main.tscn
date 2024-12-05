@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://clihluudomxhj"]
+[gd_scene load_steps=16 format=3 uid="uid://clihluudomxhj"]
 
 [ext_resource type="PackedScene" uid="uid://dlg5ytsen53ed" path="res://blue_candy.tscn" id="2_e6exv"]
 [ext_resource type="PackedScene" uid="uid://c0pdu6qw2615h" path="res://green_candy.tscn" id="2_k3hn0"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://cvvlua31wand8" path="res://player.tscn" id="3_t3agp"]
 [ext_resource type="PackedScene" uid="uid://crrwy4ulpnxpr" path="res://empty_wrapper.tscn" id="4_oxuj5"]
 [ext_resource type="PackedScene" uid="uid://lpo67ytbp3t5" path="res://pink_candy.tscn" id="4_uuvck"]
+[ext_resource type="PackedScene" uid="uid://bnlkpj3f21jbv" path="res://Powerup candies/chocolate_candy.tscn" id="5_vcv00"]
 [ext_resource type="FontFile" uid="uid://du6iq4prfdkvt" path="res://Fonts/KarmaFuture.ttf" id="6_fdowf"]
 [ext_resource type="PackedScene" uid="uid://giae6325oyo0" path="res://heart.tscn" id="8_gmaj6"]
 [ext_resource type="Texture2D" uid="uid://cnlaxbra6mf31" path="res://Store-Message/message.png" id="8_qymwg"]
@@ -21,12 +22,15 @@ script/source = "extends Node2D
 @export var green_candy: PackedScene
 @export var pink_candy: PackedScene
 @export var empty_wrapper: PackedScene
+@export var chocolate_candy:PackedScene
 @export var score: int = 0
 @export var initial_spawn_interval: float = 4.0   # Starting spawn interval in seconds
 @export var min_spawn_interval: float = 0.9       # Minimum spawn interval limit
 @export var spawn_interval_reduction: float = 0.5 # Amount to reduce the interval each time
 
 var items = []  # Array to hold different items
+var medium_items = []
+var rare_items = []
 @export var lives = 3
 @onready var hearts = [$Heart, $Heart2, $Heart3]
 
@@ -36,6 +40,7 @@ func _ready() -> void:
 	items.append(green_candy)
 	items.append(pink_candy)
 	items.append(empty_wrapper)
+	medium_items.append(chocolate_candy)
 	$SpawnTimer.wait_time = initial_spawn_interval
 	$SpawnTimer.start() #Starts the spawning timer
 	$SpawnIncreaseTimer.start()
@@ -51,9 +56,28 @@ func game_over() -> void:
 	
 #spawns candy/food
 func on_SpawnTimer_timeout() -> void:
-	#Selects random item from the array
-	var item_type = items[randi() % items.size()]  # Get a random item type (candy or food)
-	var item = item_type.instantiate()
+	#Selects random item from the array to determine rarity of items 
+	var randomNum = randf()
+	var item
+	
+	#if the number is from 0-0.6, the item will be normal 
+	if randomNum < 0.6:
+		var item_type = items[randi() % items.size()]  # Get a random item type (candy or food)
+		item = item_type.instantiate()
+	#if the number is from 0.6-0.9, the item will be medium 
+	elif randomNum > 0.6 && randomNum < 0.9:
+		var medium_item_type = medium_items[0]
+		item = medium_item_type.instantiate()
+		print(lives)
+	#if the number is from 0.9-1, the item will be rare 
+	elif randomNum > 0.90:
+		#Place holder for rare 
+		var item_type = items[randi() % items.size()]  # Get a random item type (candy or food)
+		item = item_type.instantiate()
+		##rare items 
+		#var rare_item_type = rare_items[randi() % items.size()]
+		#item = rare_item_type.instantiate()
+	
 	
 	var screen_width = get_viewport_rect().size.x # Size of screen
 	var item_width = 88  # sprite width
@@ -67,8 +91,19 @@ func lose_life() -> void:
 		lives -= 1
 		hearts[lives].grey_scale()
 		$LostLifeSound.play()
+		print(lives)
 	if lives == 0:
 		game_over()  # Call your game over logic here
+
+#restores a life and undos the grayscale 
+func restore_life() -> void:
+	if lives == 3:
+		pass
+	elif lives < 3:
+		hearts[lives].restore_scale()
+		lives += 1
+		$AddPointSound.play()
+		print(lives)
 	
 func update_score(points: int) -> void:
 	$AddPointSound.play()
@@ -87,6 +122,7 @@ blue_candy = ExtResource("2_e6exv")
 green_candy = ExtResource("2_k3hn0")
 pink_candy = ExtResource("4_uuvck")
 empty_wrapper = ExtResource("4_oxuj5")
+chocolate_candy = ExtResource("5_vcv00")
 
 [node name="SpawnTimer" type="Timer" parent="."]
 wait_time = 4.0
