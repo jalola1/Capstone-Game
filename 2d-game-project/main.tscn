@@ -143,11 +143,11 @@ theme_override_font_sizes/font_size = 40
 text = "Score: 0"
 
 [node name="Heart" parent="." instance=ExtResource("8_gmaj6")]
-position = Vector2(192, 64)
+position = Vector2(231, 64)
 scale = Vector2(0.7, 0.7)
 
 [node name="Heart2" parent="." instance=ExtResource("8_gmaj6")]
-position = Vector2(128, 64)
+position = Vector2(147, 64)
 scale = Vector2(0.7, 0.7)
 
 [node name="Heart3" parent="." instance=ExtResource("8_gmaj6")]
@@ -155,9 +155,10 @@ position = Vector2(64, 64)
 scale = Vector2(0.7, 0.7)
 
 [node name="Player" parent="." instance=ExtResource("3_t3agp")]
+position = Vector2(597, 557)
 
 [node name="Message" type="Sprite2D" parent="."]
-position = Vector2(608, 160)
+position = Vector2(597, 160)
 scale = Vector2(1.56153, 1.56153)
 texture = ExtResource("8_qymwg")
 script = ExtResource("9_rnwek")
