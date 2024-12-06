@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://clihluudomxhj"]
+[gd_scene load_steps=18 format=3 uid="uid://clihluudomxhj"]
 
 [ext_resource type="PackedScene" uid="uid://dlg5ytsen53ed" path="res://blue_candy.tscn" id="2_e6exv"]
 [ext_resource type="PackedScene" uid="uid://c0pdu6qw2615h" path="res://green_candy.tscn" id="2_k3hn0"]
@@ -15,6 +15,7 @@
 [ext_resource type="AudioStream" uid="uid://kd7xnpxm46ge" path="res://FilmCow Recorded SFX/specific sounds/life-lost-game-over-89697.mp3" id="11_6uyyr"]
 [ext_resource type="AudioStream" uid="uid://ciscjruxvlj3h" path="res://FilmCow Recorded SFX/specific sounds/collect-points-190037.mp3" id="12_kk8xh"]
 [ext_resource type="AudioStream" uid="uid://dakgjo3wvjo44" path="res://NEW sfx/background music/PLAY retro-game-music-245230 (kinda like this one more).mp3" id="13_d4uoo"]
+[ext_resource type="AudioStream" uid="uid://dce3wihxf57mi" path="res://NEW sfx/sound effects/power up sfx/yay power up caught 2-6120.mp3" id="16_ektcx"]
 
 [sub_resource type="GDScript" id="GDScript_ev4nl"]
 script/source = "extends Node2D
@@ -30,6 +31,7 @@ script/source = "extends Node2D
 @export var initial_spawn_interval: float = 4.0   # Starting spawn interval in seconds
 @export var min_spawn_interval: float = 0.9       # Minimum spawn interval limit
 @export var spawn_interval_reduction: float = 0.5 # Amount to reduce the interval each time
+
 
 var items = []  # Array to hold different items
 @export var lives = 3
@@ -63,18 +65,22 @@ func on_SpawnTimer_timeout() -> void:
 	var random_chance = randf()  # Random number between 0 and 1
 	var item_type
 	
-	if random_chance < 0.05:  # 5% chance for chocolate candy
+	if random_chance < 0.05 and !Globals.powerupOnScreen:  # 5% chance for chocolate candy
 		item_type = chocolate_candy
-	elif random_chance < 0.15:  # Next 10% chance for heart candy
+		Globals.powerupOnScreen = true
+	elif random_chance < 0.15 and !Globals.powerupOnScreen:  # Next 10% chance for heart candy
 		item_type = heart_candy
+		Globals.powerupOnScreen = true
 	else:  # Remaining 85% for regular candy
 		item_type = items[randi() % items.size()]
 	var item = item_type.instantiate()
 	
-	if item.is_in_group(\"ChocolateCandy\"):
-		is_chocolate_mode = true  # Activate chocolate effect
-		$ChocolateTimer.start(10)  # Start the timer for 5 seconds
-		print(\"Chocolate mode activated!\")  # Debugging output
+	print(Globals.powerupOnScreen)
+	
+	#if item.is_in_group(\"ChocolateCandy\"):
+		#is_chocolate_mode = true  # Activate chocolate effect
+		#$ChocolateTimer.start(10)  # Start the timer for 5 seconds
+		#print(\"Chocolate mode activated!\")  # Debugging output
 	
 	var screen_width = get_viewport_rect().size.x # Size of screen
 	var item_width = 88  # sprite width
@@ -102,8 +108,14 @@ func restore_life() -> void:
 	elif lives < 3:
 		hearts[lives].restore_scale()
 		lives += 1
-		$AddPointSound.play()
+		$PowerupCollectedSound.play()
 		print(lives)
+		
+func chocolate_multipliyer() -> void:
+		is_chocolate_mode = true  # Activate chocolate effect
+		$ChocolateTimer.start(10)  # Start the timer for 5 seconds
+		$PowerupCollectedSound.play()
+		print(\"Chocolate mode activated!\")  # Debugging output
 		
 func update_score(points: int) -> void:
 	$AddPointSound.play()
@@ -194,6 +206,10 @@ stream = ExtResource("12_kk8xh")
 stream = ExtResource("13_d4uoo")
 volume_db = -6.117
 parameters/looping = true
+
+[node name="PowerupCollectedSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("16_ektcx")
+volume_db = 5.536
 
 [node name="ChocolateTimer" type="Timer" parent="."]
 wait_time = 5.0

@@ -2,6 +2,7 @@ extends Node
 
 # Globals.gd
 var final_score: int = 0
+var powerupOnScreen = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

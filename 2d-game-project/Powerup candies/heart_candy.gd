@@ -13,10 +13,12 @@ func _process(delta: float) -> void:
 	position.y += speed * delta #moves the candy downward
 	
 	if position.y > get_viewport_rect().size.y:
+		Globals.powerupOnScreen = false
 		queue_free()  # Remove candy
 
 # Function to handle collisions with the alien
 func _on_area_2d_area_entered(area: Area2D) -> void:
 	if area.is_in_group("alien"):
 		get_tree().current_scene.restore_life() #retores a life when it comes into contact with the alien
+		Globals.powerupOnScreen = false 
 		queue_free()  # Remove the chocolate after collection
