@@ -43,6 +43,8 @@ func _ready() -> void:
 	items.append(green_candy)
 	items.append(pink_candy)
 	items.append(empty_wrapper)
+	items.append(heart_candy) #tester
+	items.append(chocolate_candy) #tester
 	
 	$SpawnTimer.wait_time = initial_spawn_interval
 	$SpawnTimer.start() #Starts the spawning timer

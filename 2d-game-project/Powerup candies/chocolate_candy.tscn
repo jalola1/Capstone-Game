@@ -1,10 +1,21 @@
-[gd_scene load_steps=4 format=3 uid="uid://d26uhrndnthdk"]
+[gd_scene load_steps=5 format=3 uid="uid://d26uhrndnthdk"]
 
 [ext_resource type="Texture2D" uid="uid://brcvkcxigams5" path="res://Candies/power up candies/chocolate-bar-free-png.webp" id="1_hqo3f"]
 [ext_resource type="Script" path="res://Powerup candies/chocolate_candy.gd" id="1_j0xdt"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_b24rm"]
 radius = 59.0
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_qin3e"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 128.0
+spread = 180.0
+initial_velocity_max = 40.0
+gravity = Vector3(0, 0, 0)
+scale_min = 2.5
+scale_max = 5.0
+color = Color(0.882353, 0.890196, 0.0784314, 1)
 
 [node name="ChocolateCandy" type="Area2D" groups=["ChocolateCandy", "Powerups"]]
 script = ExtResource("1_j0xdt")
@@ -17,5 +28,12 @@ texture = ExtResource("1_hqo3f")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" groups=["ChocolateCandy"]]
 shape = SubResource("CircleShape2D_b24rm")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+amount = 40
+process_material = SubResource("ParticleProcessMaterial_qin3e")
+lifetime = 6.0
+explosiveness = 0.67
+randomness = 0.2
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
