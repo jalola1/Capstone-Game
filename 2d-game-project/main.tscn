@@ -43,7 +43,6 @@ func _ready() -> void:
 	items.append(green_candy)
 	items.append(pink_candy)
 	items.append(empty_wrapper)
-	items.append(chocolate_candy) #testing
 	
 	$SpawnTimer.wait_time = initial_spawn_interval
 	$SpawnTimer.start() #Starts the spawning timer
@@ -74,7 +73,7 @@ func on_SpawnTimer_timeout() -> void:
 	
 	if item.is_in_group(\"ChocolateCandy\"):
 		is_chocolate_mode = true  # Activate chocolate effect
-		$ChocolateTimer.start(8)  # Start the timer for 5 seconds
+		$ChocolateTimer.start(10)  # Start the timer for 5 seconds
 		print(\"Chocolate mode activated!\")  # Debugging output
 	
 	var screen_width = get_viewport_rect().size.x # Size of screen
