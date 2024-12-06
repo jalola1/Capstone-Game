@@ -71,10 +71,10 @@ func on_SpawnTimer_timeout() -> void:
 		item = medium_item_type.instantiate()
 		print(lives)
 	#if the number is from 0.9-1, the item will be rare 
-	#elif randomNum > 0.90:
-		##Place holder for rare 
-		#item_type = items[randi() % items.size()]  # Get a random item type (candy or food)
-		#item = item_type.instantiate()
+	elif randomNum > 0.90:
+		#Place holder for rare 
+		item_type = items[randi() % items.size()]  # Get a random item type (candy or food)
+		item = item_type.instantiate()
 		###rare items 
 		##var rare_item_type = rare_items[randi() % items.size()]
 		##item = rare_item_type.instantiate()
