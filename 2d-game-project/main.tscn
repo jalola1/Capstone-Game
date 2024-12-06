@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://clihluudomxhj"]
+[gd_scene load_steps=17 format=3 uid="uid://clihluudomxhj"]
 
 [ext_resource type="PackedScene" uid="uid://dlg5ytsen53ed" path="res://blue_candy.tscn" id="2_e6exv"]
 [ext_resource type="PackedScene" uid="uid://c0pdu6qw2615h" path="res://green_candy.tscn" id="2_k3hn0"]
@@ -6,7 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://cvvlua31wand8" path="res://player.tscn" id="3_t3agp"]
 [ext_resource type="PackedScene" uid="uid://crrwy4ulpnxpr" path="res://empty_wrapper.tscn" id="4_oxuj5"]
 [ext_resource type="PackedScene" uid="uid://lpo67ytbp3t5" path="res://pink_candy.tscn" id="4_uuvck"]
-[ext_resource type="PackedScene" uid="uid://bnlkpj3f21jbv" path="res://Powerup candies/heart_candy.tscn" id="5_hbyec"]
+[ext_resource type="PackedScene" uid="uid://d26uhrndnthdk" path="res://Powerup candies/chocolate_candy.tscn" id="5_hbyec"]
+[ext_resource type="PackedScene" uid="uid://dfcwyl5inx0t3" path="res://Powerup candies/heart_candy.tscn" id="5_w22kw"]
 [ext_resource type="FontFile" uid="uid://du6iq4prfdkvt" path="res://Fonts/KarmaFuture.ttf" id="6_fdowf"]
 [ext_resource type="PackedScene" uid="uid://giae6325oyo0" path="res://heart.tscn" id="8_gmaj6"]
 [ext_resource type="Texture2D" uid="uid://cnlaxbra6mf31" path="res://Store-Message/message.png" id="8_qymwg"]
@@ -23,16 +24,18 @@ script/source = "extends Node2D
 @export var pink_candy: PackedScene
 @export var empty_wrapper: PackedScene
 @export var heart_candy:PackedScene
+@export var chocolate_candy: PackedScene
 @export var score: int = 0
+
 @export var initial_spawn_interval: float = 4.0   # Starting spawn interval in seconds
 @export var min_spawn_interval: float = 0.9       # Minimum spawn interval limit
 @export var spawn_interval_reduction: float = 0.5 # Amount to reduce the interval each time
 
 var items = []  # Array to hold different items
-var medium_items = []
-var rare_items = []
 @export var lives = 3
 @onready var hearts = [$Heart, $Heart2, $Heart3]
+
+var is_chocolate_mode = false  # Tracks whether the chocolate effect is active
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -40,7 +43,8 @@ func _ready() -> void:
 	items.append(green_candy)
 	items.append(pink_candy)
 	items.append(empty_wrapper)
-	medium_items.append(heart_candy)
+	items.append(chocolate_candy) #testing
+	
 	$SpawnTimer.wait_time = initial_spawn_interval
 	$SpawnTimer.start() #Starts the spawning timer
 	$SpawnIncreaseTimer.start()
@@ -54,31 +58,24 @@ func game_over() -> void:
 	# Load the Game Over scene
 	get_tree().change_scene_to_file(\"res://Gameover - Nayellis/gameover2.tscn\")
 	
-#spawns candy/food
+#spawns candy
 func on_SpawnTimer_timeout() -> void:
-	#Selects random item from the array to determine rarity of items 
-	var randomNum = randf()
-	var item
+	# Determine whether to spawn a power-up or a regular candy
+	var random_chance = randf()  # Random number between 0 and 1
 	var item_type
 	
-	#if the number is from 0-0.6, the item will be normal 
-	if randomNum < 0.6:
-		item_type = items[randi() % items.size()]  # Get a random item type (candy or food)
-		item = item_type.instantiate()
-	#if the number is from 0.6-0.9, the item will be medium 
-	elif randomNum > 0.7 && randomNum < 0.9:
-		var medium_item_type = medium_items[0]
-		item = medium_item_type.instantiate()
-		print(lives)
-	#if the number is from 0.9-1, the item will be rare 
-	#elif randomNum > 0.90:
-		##Place holder for rare 
-		#item_type = items[randi() % items.size()]  # Get a random item type (candy or food)
-		#item = item_type.instantiate()
-		###rare items 
-		##var rare_item_type = rare_items[randi() % items.size()]
-		##item = rare_item_type.instantiate()
+	if random_chance < 0.05:  # 5% chance for chocolate candy
+		item_type = chocolate_candy
+	elif random_chance < 0.15:  # Next 10% chance for heart candy
+		item_type = heart_candy
+	else:  # Remaining 85% for regular candy
+		item_type = items[randi() % items.size()]
+	var item = item_type.instantiate()
 	
+	if item.is_in_group(\"ChocolateCandy\"):
+		is_chocolate_mode = true  # Activate chocolate effect
+		$ChocolateTimer.start(8)  # Start the timer for 5 seconds
+		print(\"Chocolate mode activated!\")  # Debugging output
 	
 	var screen_width = get_viewport_rect().size.x # Size of screen
 	var item_width = 88  # sprite width
@@ -86,7 +83,10 @@ func on_SpawnTimer_timeout() -> void:
 	item.position.y = 0
 	add_child(item)  # Add the candy to the scene
 	
-# Call this function each time a taco collision happens
+func _on_chocolate_timer_timeout() -> void:
+	is_chocolate_mode = false  # Reset the chocolate effect after time runs out
+	
+# Call this function each time a wrapper collision happens
 func lose_life() -> void:
 	if lives > 0:
 		lives -= 1
@@ -105,12 +105,14 @@ func restore_life() -> void:
 		lives += 1
 		$AddPointSound.play()
 		print(lives)
-	
+		
 func update_score(points: int) -> void:
 	$AddPointSound.play()
-	score += points
+	if is_chocolate_mode:
+		score += points * 2  # Double the points if chocolate effect is active
+	else:
+		score += points
 	$ScoreLabel.text = \"Score: %d\" % score
-
 
 func _on_spawn_increase_timer_timeout() -> void:
 	if $SpawnTimer.wait_time > min_spawn_interval:
@@ -123,7 +125,8 @@ blue_candy = ExtResource("2_e6exv")
 green_candy = ExtResource("2_k3hn0")
 pink_candy = ExtResource("4_uuvck")
 empty_wrapper = ExtResource("4_oxuj5")
-heart_candy = ExtResource("5_hbyec")
+heart_candy = ExtResource("5_w22kw")
+chocolate_candy = ExtResource("5_hbyec")
 
 [node name="SpawnTimer" type="Timer" parent="."]
 wait_time = 4.0
@@ -155,7 +158,7 @@ scale = Vector2(0.7, 0.7)
 position = Vector2(64, 64)
 scale = Vector2(0.7, 0.7)
 
-[node name="Player" parent="." instance=ExtResource("3_t3agp")]
+[node name="Player" parent="." groups=["alien"] instance=ExtResource("3_t3agp")]
 position = Vector2(597, 557)
 
 [node name="Message" type="Sprite2D" parent="."]
@@ -193,7 +196,11 @@ stream = ExtResource("13_d4uoo")
 volume_db = -6.117
 parameters/looping = true
 
+[node name="ChocolateTimer" type="Timer" parent="."]
+wait_time = 5.0
+
 [connection signal="timeout" from="SpawnTimer" to="." method="on_SpawnTimer_timeout"]
 [connection signal="timeout" from="Message/Timer" to="Message" method="_on_timer_timeout"]
 [connection signal="timeout" from="SpawnIncreaseTimer" to="." method="_on_spawn_increase_timer_timeout"]
 [connection signal="child_entered_tree" from="GameBackgroundMusic" to="." method="_on_game_background_music_child_entered_tree"]
+[connection signal="timeout" from="ChocolateTimer" to="." method="_on_chocolate_timer_timeout"]

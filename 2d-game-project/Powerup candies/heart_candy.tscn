@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://bnlkpj3f21jbv"]
+[gd_scene load_steps=4 format=3 uid="uid://dfcwyl5inx0t3"]
 
 [ext_resource type="Script" path="res://Powerup candies/heart_candy.gd" id="1_gysqw"]
 [ext_resource type="Texture2D" uid="uid://dhl1c8jkys4k3" path="res://Candies/power up candies/Heart_Lollipop_PNG_Clip_Art.png" id="2_ur4fx"]
