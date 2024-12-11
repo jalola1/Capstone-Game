@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://c2gjlso4b5onf"]
 
 [ext_resource type="Script" path="res://game_menu_sound.gd" id="1_5lkp6"]
-[ext_resource type="Texture2D" uid="uid://rtpaorq6alnh" path="res://Background images/frontstore.jpg" id="1_my75a"]
+[ext_resource type="Texture2D" uid="uid://c3mxy10upioq5" path="res://Background images/Candy Shop.png" id="2_i4hsj"]
 [ext_resource type="AudioStream" uid="uid://bx5wjlacdhe5c" path="res://FilmCow Recorded SFX/specific sounds/gameStartsound.mp3" id="4_jbilr"]
 [ext_resource type="Texture2D" uid="uid://cm2ea8w3256ax" path="res://Start Scene (Background) + Next Button/startbutton.png" id="4_xkj5h"]
 [ext_resource type="AudioStream" uid="uid://cebl5tvq24uyh" path="res://NEW sfx/background music/INTRO SCREEN puzzle-game-bright-casual-video-game-music-249202.mp3" id="5_vkoyx"]
@@ -11,8 +11,8 @@ script = ExtResource("1_5lkp6")
 
 [node name="Frontstore" type="Sprite2D" parent="."]
 position = Vector2(572.5, 323)
-scale = Vector2(2.05861, 1.32515)
-texture = ExtResource("1_my75a")
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("2_i4hsj")
 
 [node name="Startbutton" type="Button" parent="."]
 offset_left = 499.0

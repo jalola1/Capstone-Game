@@ -104,6 +104,7 @@ func lose_life() -> void:
 #restores a life and undos the grayscale 
 func restore_life() -> void:
 	if lives == 3:
+		$PowerupCollectedSound.play()
 		pass
 	elif lives < 3:
 		hearts[lives].restore_scale()
@@ -131,6 +132,7 @@ func _on_spawn_increase_timer_timeout() -> void:
 "
 
 [node name="Main" type="Node2D" groups=["game_manager"]]
+position = Vector2(1, 0)
 script = SubResource("GDScript_ev4nl")
 blue_candy = ExtResource("2_e6exv")
 green_candy = ExtResource("2_k3hn0")

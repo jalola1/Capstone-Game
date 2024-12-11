@@ -39,5 +39,8 @@ randomness = 0.2
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("3_e6p41")
+volume_db = -7.513
+autoplay = true
+attenuation = 2.37841
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
