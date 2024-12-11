@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://2sjdy6pb3fy5"]
+
+[ext_resource type="Texture2D" uid="uid://bpq011c2vsiwr" path="res://Powerup candies/vecteezy_chocolate-melting-with-waffle-background_23529203.png" id="1_cwasx"]
+
+[node name="ChocolateScreen" type="Node2D"]
+
+[node name="VecteezyChocolate-melting-with-waffle-background23529203" type="Sprite2D" parent="."]
+self_modulate = Color(1, 1, 1, 0.890196)
+position = Vector2(616, 349)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("1_cwasx")
