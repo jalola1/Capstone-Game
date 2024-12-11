@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://deujq6rtm6817"]
+
+[ext_resource type="Texture2D" uid="uid://blotli8k36ej2" path="res://Powerup candies/Frozen Candy/pnghq.com-snowflakes-border-frame-c-5.png" id="1_nk054"]
+
+[node name="FrozenScreen" type="Node2D"]
+
+[node name="Pnghq_com-snowflakes-border-frame-c-5" type="Sprite2D" parent="."]
+position = Vector2(568, 263)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("1_nk054")

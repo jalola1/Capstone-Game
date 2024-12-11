@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://cmr5466203qud"]
+[gd_scene load_steps=6 format=3 uid="uid://cmr5466203qud"]
 
 [ext_resource type="Script" path="res://frozen_candy.gd" id="1_u4bai"]
 [ext_resource type="Texture2D" uid="uid://b12s05hlb0uej" path="res://Candies/power up candies/frozen rock candy.PNG" id="2_tq3sb"]
+[ext_resource type="AudioStream" uid="uid://brp6hj7k8skgx" path="res://NEW sfx/sound effects/power up sfx/candy falling (personal fav)-2-175610.mp3" id="3_45xdi"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_4iwyj"]
 radius = 68.9638
@@ -35,5 +36,11 @@ process_material = SubResource("ParticleProcessMaterial_i0k7s")
 lifetime = 6.0
 explosiveness = 0.67
 randomness = 0.2
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_45xdi")
+volume_db = -7.513
+autoplay = true
+attenuation = 2.37842
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

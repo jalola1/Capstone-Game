@@ -1,6 +1,6 @@
 extends Area2D
 
-@export var speed: float = 200.0  # Speed at which the candy falls
+#@export var speed: float = 200.0  # Speed at which the candy falls
 
 # Called when the node enters the scene tree for the first time
 func _ready() -> void:
@@ -10,7 +10,7 @@ func _ready() -> void:
 # Called every frame
 func _process(delta: float) -> void:
 	# Move the candy downwards
-	position.y += speed * delta #moves the candy downward
+	position.y += Globals.candiesSpeed * delta #moves the candy downward
 	
 	# Check if the candy reaches the bottom of the screen
 	if position.y > get_viewport_rect().size.y:

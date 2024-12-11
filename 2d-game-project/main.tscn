@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://clihluudomxhj"]
+[gd_scene load_steps=20 format=3 uid="uid://clihluudomxhj"]
 
 [ext_resource type="PackedScene" uid="uid://dlg5ytsen53ed" path="res://blue_candy.tscn" id="2_e6exv"]
 [ext_resource type="PackedScene" uid="uid://c0pdu6qw2615h" path="res://green_candy.tscn" id="2_k3hn0"]
@@ -11,6 +11,7 @@
 [ext_resource type="FontFile" uid="uid://du6iq4prfdkvt" path="res://Fonts/KarmaFuture.ttf" id="6_fdowf"]
 [ext_resource type="PackedScene" uid="uid://cmr5466203qud" path="res://frozen_candy.tscn" id="7_eqaay"]
 [ext_resource type="PackedScene" uid="uid://giae6325oyo0" path="res://heart.tscn" id="8_gmaj6"]
+[ext_resource type="PackedScene" uid="uid://deujq6rtm6817" path="res://Powerup candies/Frozen Candy/frozen_screen.tscn" id="8_pjsr8"]
 [ext_resource type="Texture2D" uid="uid://cnlaxbra6mf31" path="res://Store-Message/message.png" id="8_qymwg"]
 [ext_resource type="Script" path="res://message.gd" id="9_rnwek"]
 [ext_resource type="AudioStream" uid="uid://kd7xnpxm46ge" path="res://FilmCow Recorded SFX/specific sounds/life-lost-game-over-89697.mp3" id="11_6uyyr"]
@@ -91,12 +92,15 @@ func on_SpawnTimer_timeout() -> void:
 	#function to activate frozen mode
 func activate_frozen_mode() -> void:
 	is_frozen_mode = true
+	$FrozenScreen.visible = true
 	$FrozenEffectTimer.start(10) #start the frozen effect
 	
 	# Reduce the falling speed of all candies
-	for child in get_children():
-		if \"speed\" in child:  # Check if the child has a fall_speed property
-			child.speed *= 0.8  # Reduce speed by half
+	#for child in get_children():
+		#if \"speed\" in child:  # Check if the child has a fall_speed property
+			#child.speed *= 0.8  # Reduce speed by half
+			
+	Globals.candiesSpeed *= 0.6
 	
 	$PowerupCollectedSound.play()
 	print(\"Frozen mode activated!\")
@@ -104,11 +108,13 @@ func activate_frozen_mode() -> void:
  # Reset frozen mode after the timer ends
 func _on_frozen_effect_timer_timeout() -> void:
 	is_frozen_mode = false
-
-	# Restore the falling speed of all candies
-	for child in get_children():
-		if \"speed\" in child:
-			child.speed *= 1.25  # Restore speed to normal
+	$FrozenScreen.visible = false 
+	## Restore the falling speed of all candies
+	#for child in get_children():
+		#if \"speed\" in child:
+			#child.speed *= 1.25  # Restore speed to normal
+			
+	Globals.candiesSpeed *= 1.25
 	print(\"Frozen mode ended!\")
 	
 # Reset the chocolate effect after the timer ends
@@ -243,6 +249,10 @@ wait_time = 5.0
 
 [node name="FrozenEffectTimer" type="Timer" parent="."]
 wait_time = 10.0
+
+[node name="FrozenScreen" parent="." instance=ExtResource("8_pjsr8")]
+visible = false
+position = Vector2(-2, 34)
 
 [connection signal="timeout" from="SpawnTimer" to="." method="on_SpawnTimer_timeout"]
 [connection signal="timeout" from="Message/Timer" to="Message" method="_on_timer_timeout"]
