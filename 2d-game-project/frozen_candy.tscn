@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=3 uid="uid://cmr5466203qud"]
+
+[ext_resource type="Script" path="res://frozen_candy.gd" id="1_u4bai"]
+[ext_resource type="Texture2D" uid="uid://b12s05hlb0uej" path="res://Candies/power up candies/frozen rock candy.PNG" id="2_tq3sb"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4iwyj"]
+radius = 68.9638
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_i0k7s"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 80.0
+spread = 180.0
+initial_velocity_max = 40.0
+gravity = Vector3(0, 0, 0)
+scale_min = 2.5
+scale_max = 5.0
+color = Color(0.882353, 0.890196, 0.0784314, 1)
+
+[node name="Node2D" type="Area2D" groups=["Powerups"]]
+script = ExtResource("1_u4bai")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_tq3sb")
+
+[node name="Area2D" type="Area2D" parent="." groups=["Powerups"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_4iwyj")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+amount = 40
+process_material = SubResource("ParticleProcessMaterial_i0k7s")
+lifetime = 6.0
+explosiveness = 0.67
+randomness = 0.2
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

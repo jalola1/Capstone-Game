@@ -21,7 +21,7 @@ color = Color(0.882353, 0.890196, 0.0784314, 1)
 [node name="ChocolateCandy" type="Area2D" groups=["ChocolateCandy", "Powerups"]]
 script = ExtResource("1_j0xdt")
 
-[node name="Sprite2D" type="Sprite2D" parent="." groups=["ChocolateCandy"]]
+[node name="Sprite2D" type="Sprite2D" parent="." groups=["ChocolateCandy", "Powerups"]]
 scale = Vector2(0.15, 0.15)
 texture = ExtResource("1_hqo3f")
 

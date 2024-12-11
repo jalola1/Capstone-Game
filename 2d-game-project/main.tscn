@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://clihluudomxhj"]
+[gd_scene load_steps=19 format=3 uid="uid://clihluudomxhj"]
 
 [ext_resource type="PackedScene" uid="uid://dlg5ytsen53ed" path="res://blue_candy.tscn" id="2_e6exv"]
 [ext_resource type="PackedScene" uid="uid://c0pdu6qw2615h" path="res://green_candy.tscn" id="2_k3hn0"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://d26uhrndnthdk" path="res://Powerup candies/chocolate_candy.tscn" id="5_hbyec"]
 [ext_resource type="PackedScene" uid="uid://dfcwyl5inx0t3" path="res://Powerup candies/heart_candy.tscn" id="5_w22kw"]
 [ext_resource type="FontFile" uid="uid://du6iq4prfdkvt" path="res://Fonts/KarmaFuture.ttf" id="6_fdowf"]
+[ext_resource type="PackedScene" uid="uid://cmr5466203qud" path="res://frozen_candy.tscn" id="7_eqaay"]
 [ext_resource type="PackedScene" uid="uid://giae6325oyo0" path="res://heart.tscn" id="8_gmaj6"]
 [ext_resource type="Texture2D" uid="uid://cnlaxbra6mf31" path="res://Store-Message/message.png" id="8_qymwg"]
 [ext_resource type="Script" path="res://message.gd" id="9_rnwek"]
@@ -26,18 +27,19 @@ script/source = "extends Node2D
 @export var empty_wrapper: PackedScene
 @export var heart_candy:PackedScene
 @export var chocolate_candy: PackedScene
+@export var frozen_candy: PackedScene
 @export var score: int = 0
 
 @export var initial_spawn_interval: float = 4.0   # Starting spawn interval in seconds
 @export var min_spawn_interval: float = 0.9       # Minimum spawn interval limit
 @export var spawn_interval_reduction: float = 0.5 # Amount to reduce the interval each time
 
-
 var items = []  # Array to hold different items
 @export var lives = 3
 @onready var hearts = [$Heart, $Heart2, $Heart3]
 
 var is_chocolate_mode = false  # Tracks whether the chocolate effect is active
+var is_frozen_mode = false  # Tracks whether the frozen effect is active
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -71,16 +73,14 @@ func on_SpawnTimer_timeout() -> void:
 	elif random_chance < 0.15 and !Globals.powerupOnScreen:  # Next 10% chance for heart candy
 		item_type = heart_candy
 		Globals.powerupOnScreen = true
-	else:  # Remaining 85% for regular candy
+	elif random_chance < 0.25 and !Globals.powerupOnScreen: # Next 10% chance for frozen candy
+		item_type = frozen_candy
+		Globals.powerupOnScreen = true
+	else:  # Remaining 75% for regular candy
 		item_type = items[randi() % items.size()]
 	var item = item_type.instantiate()
 	
 	print(Globals.powerupOnScreen)
-	
-	#if item.is_in_group(\"ChocolateCandy\"):
-		#is_chocolate_mode = true  # Activate chocolate effect
-		#$ChocolateTimer.start(10)  # Start the timer for 5 seconds
-		#print(\"Chocolate mode activated!\")  # Debugging output
 	
 	var screen_width = get_viewport_rect().size.x # Size of screen
 	var item_width = 88  # sprite width
@@ -88,8 +88,32 @@ func on_SpawnTimer_timeout() -> void:
 	item.position.y = 0
 	add_child(item)  # Add the candy to the scene
 	
+	#function to activate frozen mode
+func activate_frozen_mode() -> void:
+	is_frozen_mode = true
+	$FrozenEffectTimer.start(10) #start the frozen effect
+	
+	# Reduce the falling speed of all candies
+	for child in get_children():
+		if \"speed\" in child:  # Check if the child has a fall_speed property
+			child.speed *= 0.8  # Reduce speed by half
+	
+	$PowerupCollectedSound.play()
+	print(\"Frozen mode activated!\")
+	
+ # Reset frozen mode after the timer ends
+func _on_frozen_effect_timer_timeout() -> void:
+	is_frozen_mode = false
+
+	# Restore the falling speed of all candies
+	for child in get_children():
+		if \"speed\" in child:
+			child.speed *= 1.25  # Restore speed to normal
+	print(\"Frozen mode ended!\")
+	
+# Reset the chocolate effect after the timer ends
 func _on_chocolate_timer_timeout() -> void:
-	is_chocolate_mode = false  # Reset the chocolate effect after time runs out
+	is_chocolate_mode = false 
 	
 # Call this function each time a wrapper collision happens
 func lose_life() -> void:
@@ -140,6 +164,7 @@ pink_candy = ExtResource("4_uuvck")
 empty_wrapper = ExtResource("4_oxuj5")
 heart_candy = ExtResource("5_w22kw")
 chocolate_candy = ExtResource("5_hbyec")
+frozen_candy = ExtResource("7_eqaay")
 
 [node name="SpawnTimer" type="Timer" parent="."]
 wait_time = 4.0
@@ -216,8 +241,12 @@ volume_db = 5.536
 [node name="ChocolateTimer" type="Timer" parent="."]
 wait_time = 5.0
 
+[node name="FrozenEffectTimer" type="Timer" parent="."]
+wait_time = 10.0
+
 [connection signal="timeout" from="SpawnTimer" to="." method="on_SpawnTimer_timeout"]
 [connection signal="timeout" from="Message/Timer" to="Message" method="_on_timer_timeout"]
 [connection signal="timeout" from="SpawnIncreaseTimer" to="." method="_on_spawn_increase_timer_timeout"]
 [connection signal="child_entered_tree" from="GameBackgroundMusic" to="." method="_on_game_background_music_child_entered_tree"]
 [connection signal="timeout" from="ChocolateTimer" to="." method="_on_chocolate_timer_timeout"]
+[connection signal="timeout" from="FrozenEffectTimer" to="." method="_on_frozen_effect_timer_timeout"]
