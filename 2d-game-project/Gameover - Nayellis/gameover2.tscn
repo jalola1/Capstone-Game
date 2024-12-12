@@ -1,54 +1,42 @@
-[gd_scene load_steps=11 format=3 uid="uid://oypsob8a1nbl"]
+[gd_scene load_steps=6 format=3 uid="uid://oypsob8a1nbl"]
 
-[ext_resource type="Texture2D" uid="uid://byfri7g1y4s7i" path="res://Background images/gameover background.webp" id="1_j8d44"]
 [ext_resource type="Script" path="res://Gameover - Nayellis/gameover_2_sounds.gd" id="1_jjqie"]
-[ext_resource type="Texture2D" uid="uid://dep3w34w0skfv" path="res://Gameover Images/gameover.png" id="2_6nnph"]
-[ext_resource type="Texture2D" uid="uid://bpq7fdr5g32dl" path="res://Gameover Images/gameoveralien.png" id="3_dmxy2"]
-[ext_resource type="Texture2D" uid="uid://sui7ol27qbs0" path="res://Gameover Images/Play_Again.png" id="4_py7x1"]
-[ext_resource type="Texture2D" uid="uid://dpiqwgdq4kfqk" path="res://Gameover Images/yes.png" id="5_mix8a"]
-[ext_resource type="Texture2D" uid="uid://bh354fdm3nmtg" path="res://Gameover Images/No.png" id="7_iwlkm"]
+[ext_resource type="Texture2D" uid="uid://bxjebj3i3ymup" path="res://Background images/New Gameover screen.png" id="2_3ej2y"]
+[ext_resource type="FontFile" uid="uid://da6ytelqdnqeb" path="res://Fonts/Bedtime Story.ttf" id="3_yy4vj"]
 [ext_resource type="AudioStream" uid="uid://bks0lpmj7nk6f" path="res://FilmCow Recorded SFX/specific sounds/menu-button-88360.mp3" id="8_eayj1"]
 [ext_resource type="AudioStream" uid="uid://ctv4m24hb5mhl" path="res://NEW sfx/background music/GAME OVER 90s-game-ui-15-185108.mp3" id="9_erm0m"]
-[ext_resource type="FontFile" uid="uid://b2gl1mh77025x" path="res://Fonts/VCR_OSD_MONO.ttf" id="10_j8nx3"]
 
 [node name="Gameover2" type="Node2D"]
 position = Vector2(0, -11)
 script = ExtResource("1_jjqie")
 
 [node name="GameoverBackground" type="Sprite2D" parent="."]
-position = Vector2(581, 335)
-scale = Vector2(2.425, 2.46667)
-texture = ExtResource("1_j8d44")
-
-[node name="Gameover" type="Sprite2D" parent="."]
-position = Vector2(591, 173)
-texture = ExtResource("2_6nnph")
-
-[node name="Gameoveralien" type="Sprite2D" parent="."]
-position = Vector2(607, 527)
-texture = ExtResource("3_dmxy2")
-
-[node name="PlayAgain" type="Sprite2D" parent="."]
-position = Vector2(604, 319)
-scale = Vector2(0.626923, 0.583333)
-texture = ExtResource("4_py7x1")
+position = Vector2(576, 335)
+scale = Vector2(0.6, 0.611)
+texture = ExtResource("2_3ej2y")
 
 [node name="YesButton" type="Button" parent="."]
-offset_left = 430.0
-offset_top = 361.0
-offset_right = 661.0
-offset_bottom = 468.0
+offset_left = 434.0
+offset_top = 435.0
+offset_right = 665.0
+offset_bottom = 689.0
 scale = Vector2(0.5, 0.5)
-icon = ExtResource("5_mix8a")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_yy4vj")
+theme_override_font_sizes/font_size = 178
+text = "Yes"
 flat = true
 
 [node name="NoButton" type="Button" parent="."]
-offset_left = 679.0
-offset_top = 364.0
-offset_right = 844.0
-offset_bottom = 471.0
+offset_left = 648.0
+offset_top = 435.0
+offset_right = 813.0
+offset_bottom = 689.0
 scale = Vector2(0.5, 0.5)
-icon = ExtResource("7_iwlkm")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_yy4vj")
+theme_override_font_sizes/font_size = 178
+text = "No"
 flat = true
 
 [node name="YesButtonSound" type="AudioStreamPlayer2D" parent="."]
@@ -61,14 +49,15 @@ stream = ExtResource("8_eayj1")
 stream = ExtResource("9_erm0m")
 
 [node name="GameOverScore" type="Label" parent="."]
-offset_left = 445.0
-offset_top = 232.0
-offset_right = 773.0
-offset_bottom = 287.0
+offset_left = 428.0
+offset_top = 259.0
+offset_right = 756.0
+offset_bottom = 341.0
 theme_override_colors/font_color = Color(0.00300748, 0.00441321, 0.00258558, 1)
-theme_override_fonts/font = ExtResource("10_j8nx3")
-theme_override_font_sizes/font_size = 40
-text = "Final Score:0"
+theme_override_fonts/font = ExtResource("3_yy4vj")
+theme_override_font_sizes/font_size = 53
+text = "Final Score: 0"
+horizontal_alignment = 1
 
 [connection signal="child_entered_tree" from="." to="." method="_on_child_entered_tree"]
 [connection signal="pressed" from="YesButton" to="." method="_on_yes_button_pressed"]
